@@ -11,11 +11,11 @@ script:
   - docker run -e CI=true gratiangaga/react-test npm test -- --coverage
 
 after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker build -t gratiangaga/multi-client ./client
   - docker build -t gratiangaga/multi-nginx ./nginx
   - docker build -t gratiangaga/multi-server ./server
   - docker build -t gratiangaga/multi-worker ./worker
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push gratiangaga/multi-client
   - docker push gratiangaga/multi-nginx
   - docker push gratiangaga/multi-server
